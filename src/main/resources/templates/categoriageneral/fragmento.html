@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- 1️⃣ Botón Agregar (Modal Trigger) -->
+    <section th:fragment="botonesAgregar" class="py-4 mb-4 bg-light border-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">   
+                    <button 
+                        type="button" 
+                        class="btn btn-primary w-100" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#agregarCategoriaGeneral">
+                        <i class="fas fa-plus me-2"></i> [[#{categoriageneral.agregar}]]
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2️⃣ Modal Agregar Categoría -->
+    <section th:fragment="agregarCategoriaGeneral">
+        <div id="agregarCategoriaGeneral" class="modal fade" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">[[#{categoriageneral.agregar}]]</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form th:action="@{/categoriageneral/guardar}" 
+                          th:object="${categoriageneral}"
+                          method="POST" 
+                          class="was-validated" 
+                          enctype="multipart/form-data">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="descripcion" class="form-label">[[#{categoriageneral.descripcion}]]</label>
+                                <input type="text" class="form-control" name="descripcion" required />
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" name="activo" id="activo"/>
+                                <label class="form-check-label" for="activo">[[#{categoriageneral.activo}]]</label>
+                            </div>
+                            <div class="mb-3">
+                                <label for="imagen" class="form-label">[[#{categoriageneral.rutaImagen}]]</label>
+                                <input class="form-control" type="file" name="imagenFile" onchange="readURL(this);" />
+                                <img id="blah" src="#" alt="preview" class="mt-2 img-fluid rounded shadow-sm" style="max-height: 200px;"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" type="submit">
+                                <i class="fas fa-check me-1"></i> Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3️⃣ Listado de Categorías Generales -->
+    <section th:fragment="listadoCategoriasGenerales" id="categoriageneralsgenerales">
+        <div class="container py-4">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="mb-0">[[#{categoriageneral.listado}]]</h4>
+                        </div>
+                        <div th:if="${categoriasgenerales != null and !categoriasgenerales.empty}">
+                            <table class="table table-hover table-striped mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>[[#{categoriageneral.descripcion}]]</th>
+                                        <th>[[#{categoriageneral.activo}]]</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="categoriageneral, contador : ${categoriasgenerales}">
+                                        <td>[[${contador.count}]]</td>
+                                        <td>[[${categoriageneral.descripcion}]]</td>
+                                        <td th:text="${categoriageneral.activo} ? 'Activa' : 'Inactiva'" />
+                                        <td>
+                                            <a th:href="@{/categoriageneral/modifica/}+${categoriageneral.idCategoriaGeneral}" class="btn btn-outline-success btn-sm me-1">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </a>
+                                            <a th:href="@{/categoriageneral/eliminar/}+${categoriageneral.idCategoriaGeneral}" class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-center p-3 text-muted" th:if="${categoriasgenerales == null or categoriasgenerales.empty}">
+                            <em>[[#{lista.vacia}]]</em>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary card -->
+                <div class="col-md-3">
+                    <div class="card text-white bg-info text-center shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">[[#{categoriageneral.total}]]</h5>
+                            <p class="display-6"><i class="fas fa-boxes"></i> [[${totalCategoriasGenerales}]]</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4️⃣ Formulario Editar Categoría -->
+    <section th:fragment="editarCategoriaGeneral">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <form method="POST"
+                          th:action="@{/categoriageneral/guardar}" 
+                          th:object="${categoriageneral}"
+                          class="was-validated"
+                          enctype="multipart/form-data">
+
+                        <input type="hidden" th:field="*{idCategoriaGeneral}" />
+                        <input type="hidden" th:field="*{rutaImagen}" />
+
+                        <section th:replace="~{categoriageneral/fragmento :: botonesEditar}" />
+
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h4 class="mb-0">[[#{accion.actualizar}]]</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="descripcion" class="form-label">[[#{categoriageneral.descripcion}]]</label>
+                                    <input type="text" class="form-control" th:field="*{descripcion}" required />
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" th:field="*{activo}" id="activo" />
+                                    <label class="form-check-label" for="activo">[[#{categoriageneral.activo}]]</label>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="imagenFile" class="form-label">[[#{categoriageneral.rutaImagen}]]</label>
+                                    <input class="form-control" type="file" name="imagenFile" onchange="readURL(this);" />
+                                    <img id="blah" th:src="@{${categoriageneral.rutaImagen}}" alt="preview" class="img-fluid rounded mt-2 shadow-sm" style="max-height: 200px;" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5️⃣ Botones para Editar -->
+    <section th:fragment="botonesEditar">
+        <div class="container my-4">
+            <div class="row g-3">
+                <div class="col-md-4 d-grid">
+                    <a th:href="@{/categoriageneral/listado}" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left"></i> [[#{accion.regresar}]]
+                    </a>
+                </div>
+                <div class="col-md-4 d-grid">
+                    <a th:href="@{/categoriageneral/eliminar/}+${categoriageneral.idCategoriaGeneral}" class="btn btn-outline-danger">
+                        <i class="fas fa-trash"></i> [[#{accion.eliminar}]]
+                    </a>
+                </div>
+                <div class="col-md-4 d-grid">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check"></i> [[#{accion.guardar}]]
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
