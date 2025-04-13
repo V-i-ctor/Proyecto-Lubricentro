@@ -65,6 +65,3 @@ public class CategoriaEspecificaController {
         return "/categoriaespecifica/modifica";
     }
 }
-//TEST
-//Prueba
-//Prueba2
