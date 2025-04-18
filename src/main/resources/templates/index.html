@@ -1,12 +1,65 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="~{layout/plantilla :: head}">
-        <title>Lubricentro</title>
-    </head>
-    <body>
-        <header th:replace="~{layout/plantilla :: header}"></header>
-        <footer th:replace="~{layout/plantilla :: footer}"></footer> 
-    </body>
+<head th:replace="~{layout/plantilla :: head}">
+    <title>Lubricentro</title>
+    <style>
+   
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+      
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+    
+        .hero-banner {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: flex-start; 
+            align-items: center;
+            padding-top: 80px; 
+        }
+
+   
+        .background-img {
+            width: auto;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+     
+        .content {
+            flex: 1;
+        }
+
+       
+        footer {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header th:replace="~{layout/plantilla :: header}"></header>
+
+    <div class="hero-banner">
+        <img th:src="@{/images/inicioBackground.png}" alt="Fondo de la página" class="background-img"/>
+    </div>
+
+    <div class="content">
+       
+    </div>
+
+    <footer th:replace="~{layout/plantilla :: footer}"></footer>
+</body>
 </html>
-
-

@@ -1,108 +1,84 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
-<head th:fragment="head">
-    <title>Lubricentro</title>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head th:fragment="head">
+        <title>Lubricentro</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
-    <link th:href="@{/webjars/font-awesome/css/all.css}" rel="stylesheet"/>
-    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+            <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+            <link th:href="@{/webjars/font-awesome/css/all.css}" rel="stylesheet"/>
+            <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+            <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
-    <style>
-        /* Primary blue colors */
-        :root {
-            --primary-blue: #0d6efd;
-            --dark-blue: #052c65;
-            --light-blue: #e9f2ff;
-        }
+            <style>
+                .navbar-custom {
+                    background-color: rgba(0, 0, 0, 0.8);
+                    //0.8 es de opacidad
+                }
 
-        .hero {
-            background: linear-gradient(90deg, var(--primary-blue), var(--dark-blue));
-            color: white;
-            padding: 3rem 0;
-            text-align: center;
-        }
+                .navbar-nav .nav-link,
+                .navbar-brand,
+                .navbar-toggler {
+                color: white !important;
+                font-size: 1.25rem;
 
-        .footer {
-            background-color: var(--dark-blue);
-            color: white;
-        }
+                }
 
-        .navbar-nav .nav-link {
-            font-weight: 500;
-        }
+                .navbar-nav .separator {
+                    color: white;
+                    margin: 0 0.5rem;
+                    font-weight: bold;
+                }
 
-        .navbar-brand {
-            font-weight: bold;
-        }
+                .navbar-toggler-icon {
+                    filter: brightness(0) invert(1);
+                }
 
-        .dropdown-menu-dark {
-            background-color: var(--primary-blue);
-        }
 
-        .dropdown-item:hover {
-            background-color: var(--light-blue);
-            color: var(--dark-blue);
-        }
-    </style>
-</head>
+                .logo-img {
+                    height: 100px;
+                    width: auto;
+                }
+            </style>
+            <body>
 
-<body>
-    <header th:fragment="header">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
-            <div class="container">
-                <a th:href="@{/}" class="navbar-brand">[[#{aplicacion.titulo}]]</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-between" id="mainNav">
-                    <ul class="navbar-nav me-auto" sec:authorize='hasRole("ROLE_VENDEDOR")'>
-                        <li class="nav-item"><a class="nav-link" th:href="@{/categoriageneral/listado}">[[#{plantilla.categoriasgenerales}]]</a></li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{/categoriaespecifica/listado}">[[#{plantilla.categoriasespecificas}]]</a></li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{/producto/listado}">[[#{plantilla.productos}]]</a></li>
-
-                        <li class="nav-item dropdown" sec:authorize='hasRole("ROLE_ADMIN")'>
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">[[#{plantilla.pruebas}]]</a>
-                            <ul class="dropdown-menu dropdown-menu-dark">
-                                <li><a class="dropdown-item" th:href="@{/pruebas/listado}">[[#{plantilla.asociaciones}]]</a></li>
-                                <li><a class="dropdown-item" th:href="@{/pruebas/listado2}">[[#{plantilla.consultas}]]</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" th:href="@{/usuario/listado}">[[#{plantilla.usuarios}]]</a></li>
-                    </ul>
-
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">[[#{plantilla.idioma}]]</a>
-                            <ul class="dropdown-menu dropdown-menu-dark">
-                                <li><a class="dropdown-item" th:href="@{/(lang=es)}">ES</a></li>
-                                <li><a class="dropdown-item" th:href="@{/(lang=en)}">EN</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/login}" title="Login">
-                                <i class="fas fa-sign-in-alt"></i>
+                <header th:fragment="header">
+                    <nav class="navbar navbar-expand-lg navbar-custom shadow-sm">
+                        <div class="container">
+                            <a th:href="@{/}" class="navbar-brand">
+                                <img th:src="@{/images/logo.png}" alt="Logo" class="logo-img"/>              
                             </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
 
-        <section class="hero">
-            <div class="container">
-                <h1 class="display-5"><i class="fas fa-oil-can me-2"></i>[[#{plantilla.suLubricentro}]]</h1>
-            </div>
-        </section>
-    </header>
+                            <div class="collapse navbar-collapse justify-content-end" id="mainNav">
+                                <ul class="navbar-nav align-items-center">
+                                    <li class="nav-item"><a class="nav-link" th:href="@{/}">Inicio</a></li>
+                                    <li class="nav-item"><a class="nav-link" th:href="@{/servicios}">Servicios</a></li>
+                                    <li class="nav-item"><a class="nav-link" th:href="@{/contacto}">Contacto</a></li>
+                                    <li class="nav-item"><a class="nav-link" th:href="@{/producto/listado}">Productos</a></li>
+                                    <span class="separator">|</span>
+                                    <li class="nav-item">
+                                        <a class="nav-link" th:href="@{/login}" title="Login">
+                                            <i class="fas fa-user fa-lg text-white"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </header>
 
-    <footer th:fragment="footer" class="footer mt-5 py-3">
-        <div class="container text-center">
-            <p class="mb-0">&copy; [[#{plantilla.derechos}]]</p>
-        </div>
-    </footer>
-</body>
-</html>
+                <footer th:fragment="footer" class="bg-dark text-white p-2">
+                    <div class="container">
+                        <div class="col">
+                            <p class="lead text-center">
+                                &COPY [[#{plantilla.derechos}]]
+                            </p>
+                        </div>
+                    </div>
+                </footer> 
+            </body>
+            </html>
